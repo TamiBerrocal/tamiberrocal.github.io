@@ -17,26 +17,27 @@ const replaceText = (element, texts, period) => {
         let periodAux = period;
         let currentText = element.innerHTML;
 
+        if(currentText === texts[texts.length - 1]) {
+            element.classList.toggle("blinking-cursor"); //Remove
+            return;
+        };
+
         if(currentText === "") {
             action = TYPE;
             text = texts[i];
             i++;
         };
 
-        if(currentText === text) { action = DELETE; };
-
-        if(currentText === texts[texts.length - 1]) {
-            element.classList.remove("cursor");
-            element.classList.remove("blinking-cursor");
-            return;
+        if(currentText === text) {
+            element.classList.toggle("cursor"); //Add
+            action = DELETE;
         };
 
         currentText = text.substring(0, currentText.length + action);
         element.innerHTML = currentText;
 
         if(currentText === text) {
-            element.classList.remove("cursor");
-            element.classList.add("blinking-cursor");
+            element.classList.toggle("cursor"); //Remove
             periodAux = WAIT;
         };
 
@@ -47,8 +48,8 @@ const replaceText = (element, texts, period) => {
     period = parseInt(period, 10) || 150;
 
     setTimeout(() => {
-        element.classList.add("cursor");
-        updateText(element, element.innerHTML, DELETE)
+        element.classList.toggle("blinking-cursor"); //Add
+        updateText(element, element.innerHTML, TYPE);
     }, WAIT);
 };
 
@@ -59,6 +60,6 @@ window.onload = () => {
         let texts = element.getAttribute('data-texts');
         let period = element.getAttribute('data-period');
 
-        setTimeout(replaceText(element, JSON.parse(texts), period), 750);
+        setTimeout(replaceText(element, JSON.parse(texts), period), 1000);
     });
 };

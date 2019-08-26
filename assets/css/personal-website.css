@@ -7,22 +7,32 @@ body {
 }
 
 .container {
-    width: 35vw;
-    margin: 5vh auto;
+    min-width: 30vw;
+    max-width: 40vmax;
+    margin: 20px auto;
 }
 
 .photo {
     display: block;
-    height: 25vmax;
-    width: 25vmax;
-    margin: 0 auto 5vh auto;
+    height: 40vh;
+    width: 40vh;
+    min-height: 175px;
+    min-width: 175px;
+    margin: 0 auto;
     border-radius: 50%;
 }
 
+.greeting-container {
+    height: fit-content;
+    min-height: 20px;
+}
+
 .greeting {
-    max-width: fit-content;
+    height: 100%;
+    width: fit-content;
+    max-width: 100%;
     background-color: #ffb3ba;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 2px;
     box-sizing: border-box;
     border: 2px solid #ffb3ba;
@@ -30,7 +40,7 @@ body {
     font-weight: bold;
     font-style: italic;
     text-transform: uppercase;
-    text-shadow: 1px 1px #fff;
+    text-shadow: 1.25px 1.25px #fff;
     opacity: .9;
 }
 
@@ -47,4 +57,9 @@ body {
 @keyframes blink {
     0% { border: 2px solid #ffb3ba; }
     50% { border-right: 2px solid #000; }
+}
+
+.about-me, .contact, .goodbye {
+    width: 100%;
+    font-size: 10pt;
 }
