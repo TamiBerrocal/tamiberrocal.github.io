@@ -13,12 +13,17 @@ const TYPE = 1;
 const WAIT = 1750;
 
 const replaceText = (element, texts, period) => {
+
+    const updateStyle = (element, style) => {
+        element.classList.toggle(style);
+    }
+
     const updateText = (element, text, action) => {
         let periodAux = period;
         let currentText = element.innerHTML;
 
         if(currentText === texts[texts.length - 1]) {
-            element.classList.toggle("blinking-cursor"); //Remove
+            updateStyle(element, "blinking-cursor"); //Remove
             return;
         };
 
@@ -26,10 +31,8 @@ const replaceText = (element, texts, period) => {
             action = TYPE;
             text = texts[i];
             i++;
-        };
-
-        if(currentText === text) {
-            element.classList.toggle("cursor"); //Add
+        } else if(currentText === text) {
+            updateStyle(element, "cursor"); //Add
             action = DELETE;
         };
 
@@ -37,7 +40,7 @@ const replaceText = (element, texts, period) => {
         element.innerHTML = currentText;
 
         if(currentText === text) {
-            element.classList.toggle("cursor"); //Remove
+            updateStyle(element, "cursor"); //Remove
             periodAux = WAIT;
         };
 
@@ -48,7 +51,7 @@ const replaceText = (element, texts, period) => {
     period = parseInt(period, 10) || 150;
 
     setTimeout(() => {
-        element.classList.toggle("blinking-cursor"); //Add
+        updateStyle(element, "blinking-cursor"); //Add
         updateText(element, element.innerHTML, TYPE);
     }, WAIT);
 };

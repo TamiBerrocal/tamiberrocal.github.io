@@ -22,23 +22,20 @@ body {
     border-radius: 50%;
 }
 
-.greeting-container {
-    height: fit-content;
-    min-height: 20px;
-}
-
 .greeting {
-    height: 100%;
     width: fit-content;
     max-width: 100%;
-    background-color: #ffb3ba;
     margin: 20px auto;
-    padding: 2px;
-    box-sizing: border-box;
-    border: 2px solid #ffb3ba;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     font-style: italic;
+}
+
+.typed {
+    background-color: #ffb3ba;
+    padding: 2px;
+    box-sizing: border-box;
+    border: 2px solid #ffb3ba;
     text-transform: uppercase;
     text-shadow: 1.25px 1.25px #fff;
     opacity: .9;
@@ -59,7 +56,11 @@ body {
     50% { border-right: 2px solid #000; }
 }
 
-.about-me, .contact, .goodbye {
-    width: 100%;
+.presentation, .about-me, .contact, .goodbye {
+    width: fit-content;
     font-size: 10pt;
+}
+
+.presentation {
+    margin: auto;
 }
