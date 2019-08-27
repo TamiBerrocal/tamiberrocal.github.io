@@ -23,12 +23,16 @@ body {
 }
 
 .language {
+    height: 25px;
+    width: 25px;
     margin: 0;
     padding: 2px;
     background-color: #bae1ff;
+    color: #fff;
     font-size: 8pt;
     border: none;
-    border-radius: 2px;
+    border-radius: 50%;
+    box-shadow: .5px .5px 3px #ccc;
     text-align: center;
     outline: none;
     cursor: pointer;
@@ -95,5 +99,10 @@ body {
 }
 
 .presentation {
-    margin: auto;
+    margin: 0 auto;
+}
+
+.nickname {1
+  font-style: italic;
+  font-size: 8px;
 }
