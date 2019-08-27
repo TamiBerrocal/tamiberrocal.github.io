@@ -11,33 +11,35 @@ body {
     min-width: 200px;
     max-width: 400px;
     margin: 0 auto;
-    border: 1px solid #000;
+    box-sizing: border-box;
+    border: 1px solid #fff;
 }
 
 .button-container {
     position: absolute;
-    position: absolute;
     top: 0;
     right: 0;
-    margin: 4px;
+    margin: 5px;
 }
 
 .language {
-    height: 25px;
-    width: 25px;
     margin: 0;
-    background-color: #fff;
-    box-shadow: 1px 1px #000;
+    padding: 2px;
+    background-color: #bae1ff;
     font-size: 8pt;
-    text-shadow: .5px .5px #000;
-    border: 1px solid #ffb3ba;
-    border-radius: 50%;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
     outline: none;
     cursor: pointer;
+    opacity: .9;
 }
 
 .language:hover {
-    background-color: #ffb3ba;
+    background-color: #fff;
+    color: #bae1ff;
+    box-sizing: border-box;;
+    border: 1px solid #bae1ff;
 }
 
 .photo {
