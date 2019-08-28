@@ -6,44 +6,25 @@ body {
     font-family: 'Hepta Slab', serif;
 }
 
+a {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+}
+
 .container {
     position: relative;
     min-width: 200px;
-    max-width: 400px;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.profile {
+    padding: 10px 12.5px;
+    min-width: 185px;
+    max-width: 450px;
     margin: 0 auto;
     box-sizing: border-box;
-    border: 1px solid #fff;
-}
-
-.button-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 5px;
-}
-
-.language {
-    height: 25px;
-    width: 25px;
-    margin: 0;
-    padding: 2px;
-    background-color: #bae1ff;
-    color: #fff;
-    font-size: 8pt;
-    border: none;
-    border-radius: 50%;
-    box-shadow: .5px .5px 3px #ccc;
-    text-align: center;
-    outline: none;
-    cursor: pointer;
-    opacity: .9;
-}
-
-.language:hover {
-    background-color: #fff;
-    color: #bae1ff;
-    box-sizing: border-box;;
-    border: 1px solid #bae1ff;
 }
 
 .photo {
@@ -52,7 +33,7 @@ body {
     width: 40vh;
     min-height: 175px;
     min-width: 175px;
-    margin: 20px auto 0 auto;
+    margin: 0 auto;
     border-radius: 50%;
 }
 
@@ -93,16 +74,45 @@ body {
     50% { border-right: 2px solid #000; }
 }
 
-.presentation, .about-me, .contact, .goodbye {
+.introduction, .about-me, .contact, .goodbye {
     width: fit-content;
+    margin: 12.5px;
     font-size: 10pt;
 }
 
-.presentation {
-    margin: 0 auto;
+.introduction {
+    margin: 12.5px auto 0 auto;
 }
 
-.nickname {1
-  font-style: italic;
-  font-size: 8px;
+.nickname {
+    margin: 0 auto;
+    font-size: 9px;
+}
+
+.social-networks {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 0;
+}
+
+.language {
+    padding: 3px;
+    background-color: #fff;
+    font-size: 8pt;
+    box-sizing: border-box;;
+    border: 1px dashed #bae1ff;
+    font-weight: normal;
+    outline: none;
+    cursor: pointer;
+    opacity: .9;
+}
+
+.language:hover {
+    background-color: #bae1ff;
+    border-style: solid;
 }
