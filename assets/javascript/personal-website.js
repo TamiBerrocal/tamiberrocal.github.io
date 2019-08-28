@@ -1,4 +1,4 @@
-const colors = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff"];
+const COLORS = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff"];
 
 const replaceText = (element, texts, period) => {
     const DELETE = -1;
@@ -48,19 +48,24 @@ const replaceText = (element, texts, period) => {
 };
 
 const getRandomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)] || colors[3];
+    let color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    console.log(color);
+    return color;
 }
 
 window.onload = () => {
     const typed = document.querySelector('.typed');
+    const aboutMe = document.querySelectorAll('.about-me');
+    const contact = document.querySelectorAll('.contact');
     const socialNetworks = document.querySelectorAll('.social-network');
 
     let texts = typed.getAttribute('data-texts');
     let period = typed.getAttribute('data-period');
 
-    setTimeout(replaceText(typed, JSON.parse(texts), period), 1000);
+    aboutMe.forEach(element => element.addEventListener("mouseover", function() { this.style.backgroundColor = getRandomColor(); }));
+    aboutMe.forEach(element => element.addEventListener("mouseout", function() { this.style.backgroundColor = "#fff"; }));
+    contact.forEach(element => element.addEventListener("mouseover", function() { this.style.backgroundColor = getRandomColor(); }));
+    contact.forEach(element => element.addEventListener("mouseout", function() { this.style.backgroundColor = "#fff"; }));
 
-    socialNetworks.forEach(element => {
-        element.style.color = getRandomColor();
-    });
+    setTimeout(replaceText(typed, JSON.parse(texts), period), 1000);
 };
