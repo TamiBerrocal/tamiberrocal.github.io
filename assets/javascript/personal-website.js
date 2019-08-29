@@ -54,7 +54,7 @@ const getRandomElement = (array) => {
 window.onload = () => {
     const typed = document.querySelector('.typed');
     const aboutMe = document.querySelectorAll('.about-me');
-    const contact = document.querySelectorAll('.profile > .contact');
+    const contact = document.querySelectorAll('.main > .contact');
     const contactContainer = document.querySelectorAll('.contact-container');
     const socialNetwork = document.querySelectorAll('.social-network');
     const goodbye = document.querySelectorAll('.goodbye');
@@ -73,7 +73,7 @@ window.onload = () => {
 
     coloredNodes.filter(el => el.node.classList.contains("social-network")).forEach(el => el.node.style.color = el.color);
     coloredNodes.forEach(el => el.node.addEventListener("mouseover", function() { this.style.backgroundColor = el.color; }));
-    coloredNodes.forEach(el => el.node.addEventListener("mouseout", function() { this.style.backgroundColor = "white"; }));
+    coloredNodes.forEach(el => el.node.addEventListener("mouseout", function() { this.style.backgroundColor = "inherit"; }));
 
     language.addEventListener("click", () => {
         es.forEach(el => el.classList.toggle("hidden"));

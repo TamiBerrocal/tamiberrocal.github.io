@@ -8,10 +8,32 @@ body {
 }
 
 .profile {
+    position: relative;
     padding: 10px 10px;
     min-width: 175px;
     max-width: 400px;
     margin: 0 auto;
+}
+
+.cover {
+  position: absolute;
+  width: 100%;
+/*
+  margin: 0 auto;
+*/
+  z-index: 0;
+}
+
+.main {
+  display: none;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-color: #fff;
+/*
+  margin: 0 auto;
+*/
+  z-index: 1;
 }
 
 .photo {
@@ -100,10 +122,10 @@ body {
 }
 
 .language {
-  display: block;
+    display: block;
     height: 30px;
     width: 30px;
-    margin: 5px auto;
+    margin: 50px auto;
     padding: 4px;
     background-color: #bae1ff;
     border: 2px solid #bae1ff;
@@ -122,4 +144,15 @@ body {
 
 .hidden {
     display: none;
+}
+
+.footer {
+    position: absolute;
+    bottom: 5px;
+}
+
+.footer p {
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 10px;
 }
