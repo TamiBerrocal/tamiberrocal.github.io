@@ -41,6 +41,7 @@ body {
     background-color: #ffb3ba;
     padding: 2px;
     border: 2px solid #ffb3ba;
+    box-shadow: 1px 1px 2px #ddd;
     text-transform: uppercase;
     text-shadow: 1.25px 1.25px #fff;
     opacity: .9;
@@ -94,15 +95,20 @@ body {
     margin: 10px;
 }
 
-.button-container {
-    width: fit-content;
-    margin: 5px auto;
+.footer {
+    width: 100%;
 }
 
 .language {
+  display: block;
+    height: 30px;
+    width: 30px;
+    margin: 5px auto;
     padding: 4px;
-    background-color: #fff;
-    border: 2px dashed #bae1ff;
+    background-color: #bae1ff;
+    border: 2px solid #bae1ff;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px #ddd;
     font-size: 8pt;
     font-weight: normal;
     outline: none;
@@ -110,8 +116,8 @@ body {
 }
 
 .language:hover {
-    background-color: #bae1ff;
-    border-style: solid;
+    background-color: #fff;
+    border-style: dashed;
 }
 
 .hidden {

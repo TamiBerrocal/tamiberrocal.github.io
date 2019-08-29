@@ -54,7 +54,7 @@ const getRandomElement = (array) => {
 window.onload = () => {
     const typed = document.querySelector('.typed');
     const aboutMe = document.querySelectorAll('.about-me');
-    const contact = document.querySelectorAll('.contact');
+    const contact = document.querySelectorAll('.profile > .contact');
     const contactContainer = document.querySelectorAll('.contact-container');
     const socialNetwork = document.querySelectorAll('.social-network');
     const goodbye = document.querySelectorAll('.goodbye');
