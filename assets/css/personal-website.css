@@ -1,31 +1,17 @@
 html {
     background-color: #fff;
+    box-sizing: border-box;
 }
 
 body {
     font-family: 'Hepta Slab', serif;
 }
 
-a {
-    display: inline-block;
-    height: 30px;
-    width: 30px;
-}
-
-.container {
-    position: relative;
-    min-width: 200px;
-    max-width: 550px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
 .profile {
     padding: 10px 10px;
-    min-width: 200px;
-    max-width: 475px;
+    min-width: 175px;
+    max-width: 400px;
     margin: 0 auto;
-    box-sizing: border-box;
 }
 
 .photo {
@@ -40,6 +26,7 @@ a {
 
 .greeting {
     width: fit-content;
+    min-width: 0;
     max-width: 100%;
     margin: 20px auto;
 }
@@ -53,7 +40,6 @@ a {
 .typed {
     background-color: #ffb3ba;
     padding: 2px;
-    box-sizing: border-box;
     border: 2px solid #ffb3ba;
     text-transform: uppercase;
     text-shadow: 1.25px 1.25px #fff;
@@ -76,7 +62,8 @@ a {
 }
 
 .about-me, .contact, .goodbye {
-    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     padding: 10px;
     margin: 0;
     font-size: 10pt;
@@ -84,14 +71,14 @@ a {
 
 .introduction {
     width: fit-content;
-    padding: 10px 10px 10px 10px;
+    min-width: 0;
+    padding: 10px 10px 0 10px;
     margin: 0 auto;
     font-size: 10pt;
 }
 
 .nickname {
-    margin: 0 auto;
-    padding: 0;
+    padding: 0 0 10px 0;
     font-size: 9px;
 }
 
@@ -101,25 +88,32 @@ a {
     align-items: center;
 }
 
+.social-network {
+    height: fit-content;
+    width: fit-content;
+    margin: 10px;
+}
+
 .button-container {
-    position: absolute;
-    bottom: 0;
-    margin: 0 auto;
+    width: fit-content;
+    margin: 5px auto;
 }
 
 .language {
-    padding: 3px;
+    padding: 4px;
     background-color: #fff;
-    box-sizing: border-box;;
-    border: 1px dashed #bae1ff;
+    border: 2px dashed #bae1ff;
     font-size: 8pt;
     font-weight: normal;
     outline: none;
     cursor: pointer;
-    opacity: .9;
 }
 
 .language:hover {
     background-color: #bae1ff;
     border-style: solid;
+}
+
+.hidden {
+    display: none;
 }
