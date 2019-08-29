@@ -1,4 +1,4 @@
-const COLORS = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff"];
+const COLORS = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff", "#ffddd1", "#f0c9d7", "#d4c2e1", "#bdd7ea", "#c0f0f4"];
 
 const replaceText = (element, texts, period) => {
     const DELETE = -1;
@@ -47,10 +47,8 @@ const replaceText = (element, texts, period) => {
     }, WAIT);
 };
 
-const getRandomColor = () => {
-    let color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    console.log(color);
-    return color;
+const getRandomElement = (array) => {
+    return array.splice([Math.floor(Math.random() * array.length)], 1)[0];
 }
 
 window.onload = () => {
@@ -59,13 +57,22 @@ window.onload = () => {
     const contact = document.querySelectorAll('.contact');
     const socialNetworks = document.querySelectorAll('.social-network');
 
+    let colors = [...COLORS];
+    let coloredNodes = [];
+
+    aboutMe.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
+    contact.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
+    socialNetworks.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
+
+    console.log(coloredNodes);
+
+    coloredNodes.filter(el => el.node.classList.contains("social-network")).forEach(el => el.node.style.color = el.color);
+
+    coloredNodes.forEach(el => el.node.addEventListener("mouseover", function() { this.style.backgroundColor = el.color; }));
+    coloredNodes.forEach(el => el.node.addEventListener("mouseout", function() { this.style.backgroundColor = "white"; }));
+
     let texts = typed.getAttribute('data-texts');
     let period = typed.getAttribute('data-period');
-
-    aboutMe.forEach(element => element.addEventListener("mouseover", function() { this.style.backgroundColor = getRandomColor(); }));
-    aboutMe.forEach(element => element.addEventListener("mouseout", function() { this.style.backgroundColor = "#fff"; }));
-    contact.forEach(element => element.addEventListener("mouseover", function() { this.style.backgroundColor = getRandomColor(); }));
-    contact.forEach(element => element.addEventListener("mouseout", function() { this.style.backgroundColor = "#fff"; }));
 
     setTimeout(replaceText(typed, JSON.parse(texts), period), 1000);
 };
