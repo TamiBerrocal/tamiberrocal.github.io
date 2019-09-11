@@ -1,87 +1,122 @@
-const COLORS = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff", "#ffddd1", "#f0c9d7", "#d4c2e1", "#bdd7ea", "#c0f0f4"];
+const COLORS = ["#ff9999", "#feff57", "#7af996"];
+const BACKGROUND_COLORS = ["#f0c9d7", "#ffdfba", "#ffffba", "#baffc9", "#ffddd1", "#c0f0f4"];
 
-const replaceText = (element, texts, period) => {
+const addStyle = (element, style) => {
+    element.classList.add(style);
+}
+
+const removeStyle = (element, style) => {
+    element.classList.remove(style);
+}
+
+const changeStyles = (element, added, removed) => {
+    addStyle(element, added);
+    removeStyle(element, removed);
+}
+
+const replaceText = (element) => {
     const DELETE = -1;
     const TYPE = 1;
     const WAIT = 1750;
 
-    const updateStyle = (element, style) => {
-        element.classList.toggle(style);
-    }
-
     const updateText = (element, text, action) => {
         let periodAux = period;
-        let currentText = element.innerHTML;
 
-        if(currentText === texts[texts.length - 1]) {
-            updateStyle(element, "blinking-cursor"); //Remove
+        if(!element.classList.contains("typed")) {
+            removeStyle(element, "cursor");
+            removeStyle(element, "blinking-cursor");
+            return;
+        }
+
+        if(element.innerHTML === texts[texts.length - 1]) {
+            removeStyle(element, "blinking-cursor");
             return;
         };
 
-        if(currentText === "") {
+        if(element.innerHTML === "") {
             action = TYPE;
             text = texts[i];
             i++;
-        } else if(currentText === text) {
-            updateStyle(element, "cursor"); //Add
+        } else if(element.innerHTML === text) {
             action = DELETE;
+            changeStyles(element, "cursor", "blinking-cursor");
         };
 
-        currentText = text.substring(0, currentText.length + action);
-        element.innerHTML = currentText;
+        element.innerHTML = text.substring(0, element.innerHTML.length + action);
 
-        if(currentText === text) {
-            updateStyle(element, "cursor"); //Remove
+        if(element.innerHTML === text) {
+            changeStyles(element, "blinking-cursor", "cursor");
             periodAux = WAIT;
         };
 
         setTimeout(() => updateText(element, text, action), periodAux);
-    };
+    }
 
     let i = 0;
-    period = parseInt(period, 10) || 150;
+    let texts = JSON.parse(element.getAttribute('data-texts'));
+    let period = parseInt(element.getAttribute('data-period'), 10) || 150;
 
-    setTimeout(() => {
-        updateStyle(element, "blinking-cursor"); //Add
-        updateText(element, element.innerHTML, TYPE);
-    }, WAIT);
-};
+    setTimeout(() => addStyle(element, "blinking-cursor"), WAIT * 1 / 2);
+    setTimeout(() => updateText(element, element.innerHTML, TYPE), WAIT);
+}
 
 const getRandomElement = (array) => {
     return array.splice([Math.floor(Math.random() * array.length)], 1)[0];
 }
 
+const addBackgroundColor = (elements, colors) => {
+    [...elements].map(el => {
+        let color = getRandomElement(colors);
+        el.style.backgroundColor = color;
+        el.style.borderColor = color;
+    });
+}
+
+const addColor = (elements, colors) => {
+    [...elements].map(el => el.style.color = getRandomElement(colors));
+}
+
+const addBackgroundColorOnHover = (elements, colors) => {
+    [...elements].map(el => {
+        let color = getRandomElement(colors);
+        el.addEventListener("mouseover", function() { this.style.backgroundColor = color; });
+        el.addEventListener("mouseout", function() { this.style.backgroundColor = "inherit"; });
+    });
+}
+
 window.onload = () => {
-    const typed = document.querySelector('.typed');
-    const aboutMe = document.querySelectorAll('.about-me');
-    const contact = document.querySelectorAll('.main > .contact');
-    const contactContainer = document.querySelectorAll('.contact-container');
-    const socialNetwork = document.querySelectorAll('.social-network');
-    const goodbye = document.querySelectorAll('.goodbye');
-    const language = document.querySelector('.language');
-    const es = document.querySelectorAll('.es');
-    const en = document.querySelectorAll('.en');
+    const greeting = document.querySelectorAll(".greeting");
+    const textES = document.querySelectorAll(".text.es");
+    const textEN = document.querySelectorAll(".text.en");
+    const bio = document.querySelectorAll(".bio");
+    const contact = document.querySelectorAll(".contact");
+    const socialNetwork = document.querySelectorAll(".social-network");
+    const goodbye = document.querySelectorAll(".goodbye");
+    const language = document.querySelector(".language");
+    const es = document.querySelectorAll(".es");
+    const en = document.querySelectorAll(".en");
 
-    let colors = [...COLORS];
-    let coloredNodes = [];
+    let typed = document.querySelector(".typed");
+    let backgroundColors = [...BACKGROUND_COLORS];
 
-    aboutMe.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    contact.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    contactContainer.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    socialNetwork.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    goodbye.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-
-    coloredNodes.filter(el => el.node.classList.contains("social-network")).forEach(el => el.node.style.color = el.color);
-    coloredNodes.forEach(el => el.node.addEventListener("mouseover", function() { this.style.backgroundColor = el.color; }));
-    coloredNodes.forEach(el => el.node.addEventListener("mouseout", function() { this.style.backgroundColor = "inherit"; }));
+    addBackgroundColor(textEN, [...COLORS]);
+    addColor(socialNetwork, [...COLORS]);
+    addBackgroundColorOnHover(bio, backgroundColors);
+    addBackgroundColorOnHover(contact, backgroundColors);
+    addBackgroundColorOnHover(goodbye, backgroundColors);
 
     language.addEventListener("click", () => {
-        es.forEach(el => el.classList.toggle("hidden"));
-        en.forEach(el => el.classList.toggle("hidden"));
+        addBackgroundColor(textES, [...COLORS]);
+
+        [...es].map(el => el.classList.toggle("hidden"));
+        [...en].map(el => el.classList.toggle("hidden"));
+        [...greeting].map(el => el.classList.toggle("typed"));
+
+        typed = document.querySelector(".typed");
+        typed.innerHTML = typed.getAttribute('data-initial-text');
+        setTimeout(replaceText(typed), 1000);
     });
 
-    let texts = typed.getAttribute('data-texts');
-    let period = typed.getAttribute('data-period');
-
-    setTimeout(replaceText(typed, JSON.parse(texts), period), 1000);
+    typed.innerHTML = typed.getAttribute('data-initial-text');
+    setTimeout(replaceText(typed), 1000);
 };
