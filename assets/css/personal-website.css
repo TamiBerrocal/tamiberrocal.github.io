@@ -60,7 +60,6 @@ body {
 .photo {
     display: block;
     height: 45vh;
-    margin: 2.5vmin;
     min-height: 175px;
     border-radius: 50%;
 }
@@ -71,18 +70,13 @@ body {
 }
 
 .introduction {
-    width: 375px;
+    width: 400px;
     min-width: 0;
     text-align: center;
 }
 
 .text {
-    display: inline-block;
-    height: fit-content;
-    width: fit-content;
-    min-width: 0;
-    margin: 3px;
-    padding: 1px;
+    padding: 2px;
     border: 2px solid #fff;
     box-shadow: 1px 1px 2.5px #ddd;
     color: #011;

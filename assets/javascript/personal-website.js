@@ -86,8 +86,8 @@ const addBackgroundColorOnHover = (elements, colors) => {
 
 window.onload = () => {
     const greeting = document.querySelectorAll(".greeting");
-    const textES = document.querySelectorAll(".text.es");
-    const textEN = document.querySelectorAll(".text.en");
+    const textES = document.querySelectorAll(".text.es, .es > .text");
+    const textEN = document.querySelectorAll(".text.en, .en > .text");
     const bio = document.querySelectorAll(".bio");
     const contact = document.querySelectorAll(".contact");
     const socialNetwork = document.querySelectorAll(".social-network");
