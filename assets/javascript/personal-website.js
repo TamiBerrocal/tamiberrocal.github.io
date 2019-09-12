@@ -84,30 +84,31 @@ const addBackgroundColorOnHover = (elements, colors) => {
     });
 }
 
+const removeBackgroundColorOnHover = elements => {
+    [...elements].map(el => {
+        el.addEventListener("mouseover", function() { this.parentNode.parentNode.style.backgroundColor = "inherit"; });
+    });
+}
+
 window.onload = () => {
     const greeting = document.querySelectorAll(".greeting");
     const textES = document.querySelectorAll(".text.es, .es > .text");
     const textEN = document.querySelectorAll(".text.en, .en > .text");
-    const bio = document.querySelectorAll(".bio");
-    const contact = document.querySelectorAll(".contact");
+    const section = document.querySelectorAll(".bio, .contact, .goodbye");
     const socialNetwork = document.querySelectorAll(".social-network");
-    const goodbye = document.querySelectorAll(".goodbye");
     const language = document.querySelector(".language");
     const es = document.querySelectorAll(".es");
     const en = document.querySelectorAll(".en");
 
     let typed = document.querySelector(".typed");
-    let backgroundColors = [...BACKGROUND_COLORS];
 
     addBackgroundColor(textEN, [...COLORS]);
+    addBackgroundColor(textES, [...COLORS]);
     addColor(socialNetwork, [...COLORS]);
-    addBackgroundColorOnHover(bio, backgroundColors);
-    addBackgroundColorOnHover(contact, backgroundColors);
-    addBackgroundColorOnHover(goodbye, backgroundColors);
+    addBackgroundColorOnHover(section, [...BACKGROUND_COLORS]);
+    removeBackgroundColorOnHover(socialNetwork);
 
     language.addEventListener("click", () => {
-        addBackgroundColor(textES, [...COLORS]);
-
         [...es].map(el => el.classList.toggle("hidden"));
         [...en].map(el => el.classList.toggle("hidden"));
         [...greeting].map(el => el.classList.toggle("typed"));
