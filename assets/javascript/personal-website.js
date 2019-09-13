@@ -86,7 +86,8 @@ const addBackgroundColorOnHover = (elements, colors) => {
 
 const removeBackgroundColorOnHover = elements => {
     [...elements].map(el => {
-        el.addEventListener("mouseover", function() { this.parentNode.parentNode.style.backgroundColor = "inherit"; });
+        el.addEventListener("mouseover", function() { this.parentElement.parentElement.style.backgroundColor = "yellow"; }, false);
+        event.stopPropagation();
     });
 }
 
