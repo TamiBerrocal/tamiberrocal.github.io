@@ -84,12 +84,17 @@ const addBackgroundColorOnHover = (elements, colors) => {
     });
 }
 
+/*
 const removeBackgroundColorOnHover = elements => {
     [...elements].map(el => {
-        el.addEventListener("mouseover", function() { this.parentElement.parentElement.style.backgroundColor = "yellow"; }, false);
+        el.addEventListener("mouseover", function() { this.parentElement.parentElement.style.setProperty("border", "2px dashed blue"); });
+        el.addEventListener("mouseout", function() { this.parentElement.parentElement.style.setProperty("border", "2px solid transparent"); });
+        el.addEventListener("mouseover", function() { this.parentElement.parentElement.style.setProperty("background-color", "blue", "important"); });
+        el.addEventListener("mouseout", function() { this.parentElement.parentElement.style.setProperty("background-color", "blue", "important"); });
         event.stopPropagation();
     });
 }
+*/
 
 window.onload = () => {
     const greeting = document.querySelectorAll(".greeting");
@@ -107,7 +112,7 @@ window.onload = () => {
     addBackgroundColor(textES, [...COLORS]);
     addColor(socialNetwork, [...COLORS]);
     addBackgroundColorOnHover(section, [...BACKGROUND_COLORS]);
-    removeBackgroundColorOnHover(socialNetwork);
+//    removeBackgroundColorOnHover(socialNetwork);
 
     language.addEventListener("click", () => {
         [...es].map(el => el.classList.toggle("hidden"));
