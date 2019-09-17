@@ -64,50 +64,101 @@ const getRandomElement = (array) => {
     return array.splice([Math.floor(Math.random() * array.length)], 1)[0];
 }
 
-const addBackgroundColor = (elements, colors) => {
+const setBackgroundColor = color => {
+    return element => element.style.backgroundColor = color;
+}
+
+const setBorder = (style, color) => {
+    return element => {
+        element.style.borderStyle = style;
+        element.style.borderColor = color;
+    }
+}
+
+const setColor = color => {
+    return element => element.style.color = color;
+}
+
+
+const addStyleToElements = (elements, style) => {
+    [...elements].map(el => style(el));
+}
+
+const addEventToElements = (elements, event, callback) => {
+    [...elements].map(el => el.addEventListener(event, () => callback(el)));
+}
+
+/*
+const addColor = (element, color) => {
+    return () => {
+        element.setAttribute("data-color", color);
+        element.style.backgroundColor = color;
+    }
+}
+
+const addBorder = (element, style, color) => {
+    return () => {
+        element.style.borderStyle = style;
+        element.style.borderColor = color;
+    }
+}
+*/
+
+const addRandomBackgroundColorOnHover = (elements, colors) => {
+    addEventToElements(elements, "mouseover", setBackgroundColor());
+    //addEventToElements(elements, "mouseover", setBorder("solid", getRandomElement(colors)));
+    addEventToElements(elements, "mouseout", setBackgroundColor("inherit"));
+
+    /*
     [...elements].map(el => {
         let color = getRandomElement(colors);
-        el.style.backgroundColor = color;
-        el.style.borderColor = color;
+        el.addEventListener("mouseover", addColor(el, color));
+        el.addEventListener("mouseover", addBorder(el, "solid", color));
+        el.addEventListener("mouseout", addColor(el, "inherit"));
+        el.addEventListener("mouseover", addBorder(el, "solid", "inherit"));
     });
+*/
 }
 
-const addColor = (elements, colors) => {
-    [...elements].map(el => el.style.color = getRandomElement(colors));
-}
-
-const addBackgroundColorOnHover = (elements, colors) => {
-    [...elements].map(el => {
-        let color = getRandomElement(colors);
-        el.addEventListener("mouseover", function() { this.style.backgroundColor = color; });
-        el.addEventListener("mouseout", function() { this.style.backgroundColor = "inherit"; });
-    });
-}
-
+/*
 const removeBackgroundColorOnHover = elements => {
     [...elements].map(el => {
-        el.addEventListener("mouseover", function() { this.parentElement.parentElement.style.backgroundColor = "yellow"; }, false);
-        event.stopPropagation();
+        el.addEventListener("mouseover", function() {
+            el.parentElement.parentElement.removeEventListener("mouseover", addColor);
+            el.parentElement.parentElement.addEventListener("mouseover", addColor(el.parentElement.parentElement, "transparent"));
+            el.parentElement.parentElement.addEventListener("mouseover", addBorder(el.parentElement.parentElement, "dashed", el.style.color));
+        });
+        el.addEventListener("mouseout", function() {
+            el.parentElement.parentElement.removeEventListener("mouseover", addColor);
+            el.parentElement.parentElement.removeEventListener("mouseover", addBorder);
+            el.parentElement.parentElement.addEventListener("mouseover", addColor(el.parentElement.parentElement, "yellow"));
+            addBorder(el, "solid", "white");
+        });
     });
 }
+*/
 
 window.onload = () => {
     const greeting = document.querySelectorAll(".greeting");
     const textES = document.querySelectorAll(".text.es, .es > .text");
     const textEN = document.querySelectorAll(".text.en, .en > .text");
     const section = document.querySelectorAll(".bio, .contact, .goodbye");
-    const socialNetwork = document.querySelectorAll(".social-network");
+    const socialNetwork = document.querySelectorAll(".social-networks > a");
     const language = document.querySelector(".language");
     const es = document.querySelectorAll(".es");
     const en = document.querySelectorAll(".en");
 
     let typed = document.querySelector(".typed");
 
-    addBackgroundColor(textEN, [...COLORS]);
-    addBackgroundColor(textES, [...COLORS]);
-    addColor(socialNetwork, [...COLORS]);
-    addBackgroundColorOnHover(section, [...BACKGROUND_COLORS]);
-    removeBackgroundColorOnHover(socialNetwork);
+//    addRandomBackgroundColor(textEN, [...COLORS]);
+//    addRandomBackgroundColor(textES, [...COLORS]);
+//    addRandomColor(socialNetwork, [...COLORS]);
+    addStyleToElements(textEN, setBackgroundColor(getRandomElement([...COLORS])));
+    addStyleToElements(textES, setBackgroundColor(getRandomElement([...COLORS])));
+    addStyleToElements(socialNetwork, setColor(getRandomElement([...COLORS])));
+
+    addRandomBackgroundColorOnHover(section, [...BACKGROUND_COLORS]);
+//    removeBackgroundColorOnHover(socialNetwork);
 
     language.addEventListener("click", () => {
         [...es].map(el => el.classList.toggle("hidden"));
