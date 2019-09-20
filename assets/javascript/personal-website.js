@@ -1,13 +1,13 @@
 const COLORS = ["#ff9999", "#feff57", "#7af996"];
 const BACKGROUND_COLORS = ["#f0c9d7", "#ffdfba", "#ffffba", "#baffc9", "#ffddd1", "#c0f0f4"];
 
-const addStyle = (element, style) => element.classList.add(style);
+const addClass = (element, added) => element.classList.add(added);
 
-const removeStyle = (element, style) => element.classList.remove(style);
+const removeClass = (element, removed) => element.classList.remove(removed);
 
-const changeStyles = (element, added, removed) => {
-    addStyle(element, added);
-    removeStyle(element, removed);
+const changeClasses = (element, added, removed) => {
+    addClass(element, added);
+    removeClass(element, removed);
 }
 
 const replaceText = (element) => {
@@ -19,13 +19,13 @@ const replaceText = (element) => {
         let periodAux = period;
 
         if(!element.classList.contains("typed")) {
-            removeStyle(element, "cursor");
-            removeStyle(element, "blinking-cursor");
+            removeClass(element, "cursor");
+            removeClass(element, "blinking-cursor");
             return;
         }
 
         if(element.innerHTML === texts[texts.length - 1]) {
-            removeStyle(element, "blinking-cursor");
+            removeClass(element, "blinking-cursor");
             return;
         };
 
@@ -35,13 +35,13 @@ const replaceText = (element) => {
             i++;
         } else if(element.innerHTML === text) {
             action = DELETE;
-            changeStyles(element, "cursor", "blinking-cursor");
+            changeClasses(element, "cursor", "blinking-cursor");
         };
 
         element.innerHTML = text.substring(0, element.innerHTML.length + action);
 
         if(element.innerHTML === text) {
-            changeStyles(element, "blinking-cursor", "cursor");
+            changeClasses(element, "blinking-cursor", "cursor");
             periodAux = WAIT;
         };
 
@@ -52,90 +52,97 @@ const replaceText = (element) => {
     let texts = JSON.parse(element.getAttribute('data-texts'));
     let period = parseInt(element.getAttribute('data-period'), 10) || 150;
 
-    setTimeout(() => addStyle(element, "blinking-cursor"), WAIT * 1 / 2);
+    setTimeout(() => addClass(element, "blinking-cursor"), WAIT * 1 / 2);
     setTimeout(() => updateText(element, element.innerHTML, TYPE), WAIT);
 }
 
-const getRandomElement = array => {
-    return array.splice([Math.floor(Math.random() * array.length)], 1)[0];
+const getRandomElement = array => array.splice([Math.floor(Math.random() * array.length)], 1)[0];
+
+const setBackgroundColor = (element, color) => {
+    return () => element.style.backgroundColor = color;
 }
 
-const setBackgroundColor = color => {
-    return element => () => {
-        element.style.backgroundColor = color;
-    }
-}
-
-const setBorder = (style, color) => {
-    return element => () => {
+const setBorder = style => (element, color) => {
+    return () => {
         element.style.borderStyle = style;
         element.style.borderColor = color;
     }
 }
 
-const setColor = color => {
-    return element => () => {
-        element.style.color = color;
-    }
+const setColor = (element, color) => {
+    return () => element.style.color = color;
 }
 
-const addRandomBackgroundColor = (elements, colors) => {
-        [...elements].map(element => {
-        element.setAttribute("data-background-color", getRandomElement(colors));
-        setBackgroundColor(element.getAttribute('data-background-color'))(element)();
-        setBorder("solid", element.getAttribute('data-background-color'))(element)();
-    });
-}
+const assingColors = (elements, colors) => [...elements].map(element => element.setAttribute("data-color", getRandomElement(colors)));
+const addStyle = (elements, style) => [...elements].map(element => style(element, element.getAttribute('data-color'))());
 
-const addRandomColor = (elements, colors) => [...elements].map(element => setColor(getRandomElement(colors))(element)());
+const addBackgroundColor = elements => addStyle(elements, setBackgroundColor);
+const addBorder = (elements, style) => addStyle(elements, setBorder(style));
+const addColor = elements => addStyle(elements, setColor);
 
-const addRandomBackgroundColorOnHover = (elements, colors) => {
+const addBackgroundColorOnHover = elements => {
     [...elements].map(element => {
-        element.setAttribute("data-background-color", getRandomElement(colors));
-        element.addEventListener("mouseover", setBackgroundColor(element.getAttribute('data-background-color'))(element));
-        element.addEventListener("mouseover", setBorder("solid", element.getAttribute('data-background-color'))(element));
-        element.addEventListener("mouseout", setBackgroundColor("transparent")(element));
-        element.addEventListener("mouseout", setBorder("solid", "transparent")(element));
+        let color = element.getAttribute('data-color');
+        element.addEventListener("mouseover", setBackgroundColor(element, color));
+        element.addEventListener("mouseover", setBorder("solid")(element, color));
+        element.addEventListener("mouseout", setBackgroundColor(element, "inherit"));
+        element.addEventListener("mouseout", setBorder("solid")(element, "transparent"));
     });
 }
 
 const removeGrandparentBackgroundColorOnHover = elements => {
     [...elements].map(element => {
         let grandparent = element.parentElement.parentElement;
-
+        let color = grandparent.getAttribute('data-color');
         element.addEventListener("mouseover", function() {
             grandparent.removeEventListener("mouseover", setBackgroundColor);
             grandparent.removeEventListener("mouseover", setBorder);
-            grandparent.addEventListener("mouseover", setBackgroundColor("transparent")(grandparent));
-            grandparent.addEventListener("mouseover", setBorder("dashed", element.style.color)(grandparent));
+            grandparent.addEventListener("mouseover", setBackgroundColor(grandparent, "inherit"));
+            grandparent.addEventListener("mouseover", setBorder("dashed")(grandparent, element.style.color));
         });
         element.addEventListener("mouseout", function() {
             grandparent.removeEventListener("mouseover", setBackgroundColor);
             grandparent.removeEventListener("mouseover", setBorder);
-            grandparent.addEventListener("mouseover", setBackgroundColor(grandparent.getAttribute('data-background-color'))(grandparent));
-            grandparent.addEventListener("mouseover", setBorder("solid", grandparent.getAttribute('data-background-color'))(grandparent));
+            grandparent.addEventListener("mouseover", setBackgroundColor(grandparent, color));
+            grandparent.addEventListener("mouseover", setBorder("solid")(grandparent, color));
         });
     });
 }
 
 window.onload = () => {
+    const header = document.querySelector(".header");
+    const main = document.querySelector(".main");
     const greeting = document.querySelectorAll(".greeting");
     const textES = document.querySelectorAll(".text.es, .es > .text");
     const textEN = document.querySelectorAll(".text.en, .en > .text");
     const section = document.querySelectorAll(".bio, .contact, .goodbye");
     const socialNetwork = document.querySelectorAll(".social-network");
     const language = document.querySelector(".language");
+    const aboutMe = document.querySelectorAll(".about-me");
     const es = document.querySelectorAll(".es");
     const en = document.querySelectorAll(".en");
 
     let typed = document.querySelector(".typed");
 
-    addRandomBackgroundColor(textEN, [...COLORS]);
-    addRandomBackgroundColor(textES, [...COLORS]);
-    addRandomColor(socialNetwork, [...COLORS]);
+    assingColors(textEN, [...COLORS]);
+    addBackgroundColor(textEN);
+    addBorder(textEN, "solid");
+    assingColors(textES, [...COLORS]);
+    addBackgroundColor(textES);
+    addBorder(textES, "solid");
+    assingColors(socialNetwork, [...COLORS]);
+    addColor(socialNetwork);
 
-    addRandomBackgroundColorOnHover(section, [...BACKGROUND_COLORS]);
+    assingColors(section, [...BACKGROUND_COLORS]);
+    addBackgroundColorOnHover(section);
     removeGrandparentBackgroundColorOnHover(socialNetwork);
+
+    [...aboutMe].map(el => el.addEventListener("click", () => {
+        el.classList.toggle("hidden");
+        header.classList.toggle("invisible");
+        main.classList.toggle("hidden");
+        main.style.setProperty("transform", "translateY(-100vh)");
+    }));
 
     language.addEventListener("click", () => {
         [...es].map(el => el.classList.toggle("hidden"));
