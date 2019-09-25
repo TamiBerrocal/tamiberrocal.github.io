@@ -4,7 +4,7 @@ html {
 }
 
 html * {
-    background-color: inherit;
+    background-color: transparent;
     box-sizing: inherit;
 }
 
@@ -17,8 +17,10 @@ body {
 .header {
     display: flex;
     height: 100vh;
-    min-width: 0;
-    padding: 1vmin;
+    width: 100vw;
+    min-height: 500px;
+    min-width: 250px;
+    padding: 2.5vmin;
     justify-content: space-evenly;
     align-items: center;
 }
@@ -26,8 +28,7 @@ body {
 @media (max-width: 1024px) {
     .header {
         flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -35,49 +36,75 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    min-width: 0;
-    padding: 1vmin;
-    justify-content: center;
+    width: 100vw;
+    min-height: 500px;
+    min-width: 250px;
+    padding: 2.5vmin;
+    justify-content: flex-start;
     align-items: center;
-    -webkit-transition: transform 10s linear, display 10s linear;
-    transition: transform 10s linear, display 10s linear;
 }
 
 .footer {
-    background-color: transparent;
     position: fixed;
     right: 0;
     bottom: 0;
     left: 0;
     display: flex;
-    min-width: 0;
-    max-width: 100%;
-    padding: 1vmin;
+    width: 100vw;
+    min-width: 250px;
+    padding: 2.5vmin;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
 }
 
 .photo {
     display: block;
-    height: 50vh;
-    min-height: 200px;
+    height: auto;
+    width: auto;
+    min-height: 250px;
+    max-height: 50%;
+    margin: 0 1vmin 0 0;
     border-radius: 50%;
 }
 
-.language, .text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-style: italic;
+@media (max-width: 1024px) {
+    .photo {
+        min-height: 150px;
+        min-width: 150px;
+        max-width: 100%;
+        margin: 0;
+    }
 }
 
 .introduction {
-    min-width: 200px;
-    max-width: 400px;
+    width: 400px;
+    margin: 0 0 0 1vmin;
     word-wrap: break-word;
+}
+
+@media (max-width: 1024px) {
+    .introduction {
+        display: flex;
+        flex-direction: column;
+        min-height: 150px;
+        max-height: 50%;
+        min-width: 150px;
+        max-width: 100%;
+        justify-content: center;
+        align-content: center;
+        margin: 5vmin 0 0 0;
+    }
 }
 
 .introduction p {
     margin: 0;
     line-height: 1.75em;
+    text-align: justify;
+}
+
+.language, .text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
 }
 
 .text {
@@ -107,17 +134,19 @@ body {
 }
 
 .bio, .contact, .goodbye {
-    min-width: 200px;
-    max-width: 400px;
-    margin: 5px;
-    padding: 10px;
+    width: 400px;
+    margin: 0;
+    padding: 2.5vmin;
     border: 2px solid transparent;
     font-size: 14px;
     word-wrap: break-word;
 }
 
-.contact, .goodbye {
-    width: 100%;
+@media (max-width: 1024px) {
+    .bio, .contact, .goodbye {
+        min-width: 150px;
+        max-width: 100%;
+    }
 }
 
 .contact > p {
@@ -126,11 +155,8 @@ body {
 
 .social-networks {
     display: flex;
-    width: fit-content;
+    width: min-content;
     margin: 0 auto;
-    min-width: 200px;
-    justify-content: space-evenly;
-    align-items: center;
 }
 
 .social-network {
@@ -145,7 +171,7 @@ body {
     font-size: 55px;
 }
 
-.language, .about-me {
+.button {
     height: 30px;
     width: 30px;
     margin: 0;
@@ -157,8 +183,8 @@ body {
     cursor: pointer;
 }
 
-.language:hover, .about-me:hover {
-    background-color: #fff;
+.button:hover {
+    background-color: rgba(255, 255, 255, .5);
     border-style: dashed;
 }
 
@@ -172,24 +198,28 @@ body {
     border: 2px solid #ffdfba;
 }
 
-.beat {
-    -webkit-animation: beat .8s infinite;
-    -moz-animation: beat .8s infinite;
-    animation: beat .8s infinite;
+.jump {
+    -webkit-animation: jump 1s infinite;
+    -moz-animation: jump 1s infinite;
+    animation: jump 1s infinite;
 }
 
-@keyframes beat {
+@keyframes jump {
     0% { transform: translateY(0); }
-    25% { transform: translateY(1.5px); }
-    50% { transform: translateY(3px); }
-    75% { transform: translateY(-1.5px); }
-    100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
 }
 
-.signature {
-    background-color: #fff;
+.message {
+    position: absolute;
+    right: 2.5vmin;
+    bottom: 2.5vmin;
+    background-color: rgba(255, 255, 255, .5);
     margin: 0;
     font-size: 10px;
+}
+
+.italic {
+    font-style: italic;
 }
 
 .hidden {

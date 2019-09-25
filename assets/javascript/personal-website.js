@@ -138,10 +138,9 @@ window.onload = () => {
     removeGrandparentBackgroundColorOnHover(socialNetwork);
 
     [...aboutMe].map(el => el.addEventListener("click", () => {
-        el.classList.toggle("hidden");
-        header.classList.toggle("invisible");
+        [...aboutMe].map(el => el.classList.toggle("hidden"));
+        header.classList.toggle("hidden");
         main.classList.toggle("hidden");
-        main.style.setProperty("transform", "translateY(-100vh)");
     }));
 
     language.addEventListener("click", () => {
