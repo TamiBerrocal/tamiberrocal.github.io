@@ -1,87 +1,158 @@
-const COLORS = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff", "#ffddd1", "#f0c9d7", "#d4c2e1", "#bdd7ea", "#c0f0f4"];
+const COLORS = ["#ff9999", "#feff57", "#7af996"];
+const BACKGROUND_COLORS = ["#f0c9d7", "#ffdfba", "#ffffba", "#baffc9", "#ffddd1", "#c0f0f4"];
 
-const replaceText = (element, texts, period) => {
+const addClass = (element, added) => element.classList.add(added);
+
+const removeClass = (element, removed) => element.classList.remove(removed);
+
+const changeClasses = (element, added, removed) => {
+    addClass(element, added);
+    removeClass(element, removed);
+}
+
+const replaceText = (element) => {
     const DELETE = -1;
     const TYPE = 1;
     const WAIT = 1750;
 
-    const updateStyle = (element, style) => {
-        element.classList.toggle(style);
-    }
-
     const updateText = (element, text, action) => {
         let periodAux = period;
-        let currentText = element.innerHTML;
 
-        if(currentText === texts[texts.length - 1]) {
-            updateStyle(element, "blinking-cursor"); //Remove
+        if(!element.classList.contains("typed")) {
+            removeClass(element, "cursor");
+            removeClass(element, "blinking-cursor");
+            return;
+        }
+
+        if(element.innerHTML === texts[texts.length - 1]) {
+            removeClass(element, "blinking-cursor");
             return;
         };
 
-        if(currentText === "") {
+        if(element.innerHTML === "") {
             action = TYPE;
             text = texts[i];
             i++;
-        } else if(currentText === text) {
-            updateStyle(element, "cursor"); //Add
+        } else if(element.innerHTML === text) {
             action = DELETE;
+            changeClasses(element, "cursor", "blinking-cursor");
         };
 
-        currentText = text.substring(0, currentText.length + action);
-        element.innerHTML = currentText;
+        element.innerHTML = text.substring(0, element.innerHTML.length + action);
 
-        if(currentText === text) {
-            updateStyle(element, "cursor"); //Remove
+        if(element.innerHTML === text) {
+            changeClasses(element, "blinking-cursor", "cursor");
             periodAux = WAIT;
         };
 
         setTimeout(() => updateText(element, text, action), periodAux);
-    };
+    }
 
     let i = 0;
-    period = parseInt(period, 10) || 150;
+    let texts = JSON.parse(element.getAttribute('data-texts'));
+    let period = parseInt(element.getAttribute('data-period'), 10) || 150;
 
-    setTimeout(() => {
-        updateStyle(element, "blinking-cursor"); //Add
-        updateText(element, element.innerHTML, TYPE);
-    }, WAIT);
-};
+    setTimeout(() => addClass(element, "blinking-cursor"), WAIT * 1 / 2);
+    setTimeout(() => updateText(element, element.innerHTML, TYPE), WAIT);
+}
 
-const getRandomElement = (array) => {
-    return array.splice([Math.floor(Math.random() * array.length)], 1)[0];
+const getRandomElement = array => array.splice([Math.floor(Math.random() * array.length)], 1)[0];
+
+const setBackgroundColor = (element, color) => {
+    return () => element.style.backgroundColor = color;
+}
+
+const setBorder = style => (element, color) => {
+    return () => {
+        element.style.borderStyle = style;
+        element.style.borderColor = color;
+    }
+}
+
+const setColor = (element, color) => {
+    return () => element.style.color = color;
+}
+
+const assingColors = (elements, colors) => [...elements].map(element => element.setAttribute("data-color", getRandomElement(colors)));
+const addStyle = (elements, style) => [...elements].map(element => style(element, element.getAttribute('data-color'))());
+
+const addBackgroundColor = elements => addStyle(elements, setBackgroundColor);
+const addBorder = (elements, style) => addStyle(elements, setBorder(style));
+const addColor = elements => addStyle(elements, setColor);
+
+const addBackgroundColorOnHover = elements => {
+    [...elements].map(element => {
+        let color = element.getAttribute('data-color');
+        element.addEventListener("mouseover", setBackgroundColor(element, color));
+        element.addEventListener("mouseover", setBorder("solid")(element, color));
+        element.addEventListener("mouseout", setBackgroundColor(element, "inherit"));
+        element.addEventListener("mouseout", setBorder("solid")(element, "transparent"));
+    });
+}
+
+const removeGrandparentBackgroundColorOnHover = elements => {
+    [...elements].map(element => {
+        let grandparent = element.parentElement.parentElement;
+        let color = grandparent.getAttribute('data-color');
+        element.addEventListener("mouseover", function() {
+            grandparent.removeEventListener("mouseover", setBackgroundColor);
+            grandparent.removeEventListener("mouseover", setBorder);
+            grandparent.addEventListener("mouseover", setBackgroundColor(grandparent, "inherit"));
+            grandparent.addEventListener("mouseover", setBorder("dashed")(grandparent, element.style.color));
+        });
+        element.addEventListener("mouseout", function() {
+            grandparent.removeEventListener("mouseover", setBackgroundColor);
+            grandparent.removeEventListener("mouseover", setBorder);
+            grandparent.addEventListener("mouseover", setBackgroundColor(grandparent, color));
+            grandparent.addEventListener("mouseover", setBorder("solid")(grandparent, color));
+        });
+    });
 }
 
 window.onload = () => {
-    const typed = document.querySelector('.typed');
-    const aboutMe = document.querySelectorAll('.about-me');
-    const contact = document.querySelectorAll('.main > .contact');
-    const contactContainer = document.querySelectorAll('.contact-container');
-    const socialNetwork = document.querySelectorAll('.social-network');
-    const goodbye = document.querySelectorAll('.goodbye');
-    const language = document.querySelector('.language');
-    const es = document.querySelectorAll('.es');
-    const en = document.querySelectorAll('.en');
+    const header = document.querySelector(".header");
+    const main = document.querySelector(".main");
+    const greeting = document.querySelectorAll(".greeting");
+    const textES = document.querySelectorAll(".text.es, .es > .text");
+    const textEN = document.querySelectorAll(".text.en, .en > .text");
+    const section = document.querySelectorAll(".bio, .contact, .goodbye");
+    const socialNetwork = document.querySelectorAll(".social-network");
+    const language = document.querySelector(".language");
+    const aboutMe = document.querySelectorAll(".about-me");
+    const es = document.querySelectorAll(".es");
+    const en = document.querySelectorAll(".en");
 
-    let colors = [...COLORS];
-    let coloredNodes = [];
+    let typed = document.querySelector(".typed");
 
-    aboutMe.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    contact.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    contactContainer.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    socialNetwork.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
-    goodbye.forEach(element => coloredNodes.push({ node: element, color: getRandomElement(colors) }));
+    assingColors(textEN, [...COLORS]);
+    addBackgroundColor(textEN);
+    addBorder(textEN, "solid");
+    assingColors(textES, [...COLORS]);
+    addBackgroundColor(textES);
+    addBorder(textES, "solid");
+    assingColors(socialNetwork, [...COLORS]);
+    addColor(socialNetwork);
 
-    coloredNodes.filter(el => el.node.classList.contains("social-network")).forEach(el => el.node.style.color = el.color);
-    coloredNodes.forEach(el => el.node.addEventListener("mouseover", function() { this.style.backgroundColor = el.color; }));
-    coloredNodes.forEach(el => el.node.addEventListener("mouseout", function() { this.style.backgroundColor = "inherit"; }));
+    assingColors(section, [...BACKGROUND_COLORS]);
+    addBackgroundColorOnHover(section);
+    removeGrandparentBackgroundColorOnHover(socialNetwork);
+
+    [...aboutMe].map(el => el.addEventListener("click", () => {
+        [...aboutMe].map(el => el.classList.toggle("hidden"));
+        header.classList.toggle("hidden");
+        main.classList.toggle("hidden");
+    }));
 
     language.addEventListener("click", () => {
-        es.forEach(el => el.classList.toggle("hidden"));
-        en.forEach(el => el.classList.toggle("hidden"));
+        [...es].map(el => el.classList.toggle("hidden"));
+        [...en].map(el => el.classList.toggle("hidden"));
+        [...greeting].map(el => el.classList.toggle("typed"));
+
+        typed = document.querySelector(".typed");
+        typed.innerHTML = typed.getAttribute('data-initial-text');
+        setTimeout(replaceText(typed), 1000);
     });
 
-    let texts = typed.getAttribute('data-texts');
-    let period = typed.getAttribute('data-period');
-
-    setTimeout(replaceText(typed, JSON.parse(texts), period), 1000);
+    typed.innerHTML = typed.getAttribute('data-initial-text');
+    setTimeout(replaceText(typed), 1000);
 };
