@@ -154,5 +154,4 @@ window.onload = () => {
     });
 
     typed.innerHTML = typed.getAttribute('data-initial-text');
-    setTimeout(replaceText(typed), 1000);
 };
